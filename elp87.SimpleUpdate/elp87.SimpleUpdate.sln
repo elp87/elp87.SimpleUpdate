@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "elp87.SimpleUpdate", "elp87.SimpleUpdate\elp87.SimpleUpdate.csproj", "{22334A81-A55B-4668-B80B-A0635108594B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.SimpleUpdate", "Test.SimpleUpdate\Test.SimpleUpdate.csproj", "{4E16670A-D409-4CDF-B38D-9AF43169F01A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{22334A81-A55B-4668-B80B-A0635108594B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22334A81-A55B-4668-B80B-A0635108594B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22334A81-A55B-4668-B80B-A0635108594B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E16670A-D409-4CDF-B38D-9AF43169F01A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E16670A-D409-4CDF-B38D-9AF43169F01A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E16670A-D409-4CDF-B38D-9AF43169F01A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E16670A-D409-4CDF-B38D-9AF43169F01A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
