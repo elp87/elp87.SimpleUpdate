@@ -10,6 +10,7 @@ namespace Test.SimpleUpdate
         public void TestMethod1()
         {
             Updater upd = new Updater();
+            upd.CheckUpdate();
         }
     }
 }
