@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<version>
+		<build>20</build>
+		<link>http://google.com</link>
+		<news>Новости</news>
+		<betaBuild>23</betaBuild>
+		<betaLink>http://yandex.ru</betaLink>
+		<betaNews>Бета новости</betaNews>
+</version>

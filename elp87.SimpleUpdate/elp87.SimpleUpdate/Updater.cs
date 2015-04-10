@@ -7,7 +7,7 @@ namespace elp87.SimpleUpdate
     {
         #region Fileds
         private string _configFileName;
-        private Uri _versionTableUri;
+        private string _versionTableFileName;
         #endregion
 
         #region Constructors
@@ -27,6 +27,7 @@ namespace elp87.SimpleUpdate
         public void CheckUpdate()
         {
             this.ParseConfigFile();
+            this.ParseVersionTable(_versionTableFileName);
         }
         #endregion
 
@@ -34,10 +35,17 @@ namespace elp87.SimpleUpdate
         private void ParseConfigFile()
         {
             XElement updX = XElement.Load(_configFileName);
-            string versionTableName = updX.Element("updconfig").Element("servername").Value;
+            string versionTableName = updX.Element("servername").Value;
             if (versionTableName == null) throw new NullVersionTableUriException();
-            this._versionTableUri = new Uri(versionTableName);
+            if (versionTableName.StartsWith(@"/")) versionTableName = System.AppDomain.CurrentDomain.BaseDirectory + versionTableName;
+            this._versionTableFileName = versionTableName;
         }
+
+        private void ParseVersionTable(string _versionTableUri)
+        {
+            XElement versionX = XElement.Load(_versionTableFileName);
+        
+        }        
         #endregion
         #endregion
     }
