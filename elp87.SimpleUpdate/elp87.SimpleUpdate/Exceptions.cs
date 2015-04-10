@@ -25,4 +25,16 @@ namespace elp87.SimpleUpdate
           System.Runtime.Serialization.StreamingContext context)
             : base(info, context) { }
     }
+
+    [Serializable]
+    public class EmptyAppNameException : Exception
+    {
+        public EmptyAppNameException() { }
+        public EmptyAppNameException(string message) : base(message) { }
+        public EmptyAppNameException(string message, Exception inner) : base(message, inner) { }
+        protected EmptyAppNameException(
+          System.Runtime.Serialization.SerializationInfo info,
+          System.Runtime.Serialization.StreamingContext context)
+            : base(info, context) { }
+    }
 }

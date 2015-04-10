@@ -1,3 +1,4 @@
 <updconfig>
+  <appName>Test</appName>
 	<servername>/versions.xml</servername>
 </updconfig>

@@ -8,6 +8,7 @@ namespace elp87.SimpleUpdate
         #region Fileds
         private string _configFileName;
         private string _versionTableFileName;
+        private string _appName;
         private int _curBuild;
 
         private string _stableBuildNumber;
@@ -41,7 +42,7 @@ namespace elp87.SimpleUpdate
             this.ParseConfigFile();
             this.ParseVersionTable(_versionTableFileName);
             this.CheckAvailability();
-        }
+        }        
         #endregion
 
         #region Private
@@ -52,6 +53,9 @@ namespace elp87.SimpleUpdate
             if (versionTableName == null) throw new NullVersionTableUriException();
             if (versionTableName.StartsWith(@"/")) versionTableName = System.AppDomain.CurrentDomain.BaseDirectory + versionTableName;
             this._versionTableFileName = versionTableName;
+
+            this._appName = updX.Element("appName").Value;
+            if (this._appName == "") throw new EmptyAppNameException();
         }
 
         private void ParseVersionTable(string _versionTableUri)
