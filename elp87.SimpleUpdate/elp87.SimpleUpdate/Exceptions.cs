@@ -13,4 +13,16 @@ namespace elp87.SimpleUpdate
           System.Runtime.Serialization.StreamingContext context)
             : base(info, context) { }
     }
+
+    [Serializable]
+    public class InvalidBuildNumberException : Exception
+    {
+        public InvalidBuildNumberException() { }
+        public InvalidBuildNumberException(string message) : base(message) { }
+        public InvalidBuildNumberException(string message, Exception inner) : base(message, inner) { }
+        protected InvalidBuildNumberException(
+          System.Runtime.Serialization.SerializationInfo info,
+          System.Runtime.Serialization.StreamingContext context)
+            : base(info, context) { }
+    }
 }

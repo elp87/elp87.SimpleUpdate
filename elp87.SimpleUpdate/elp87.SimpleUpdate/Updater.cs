@@ -9,6 +9,13 @@ namespace elp87.SimpleUpdate
         private string _configFileName;
         private string _versionTableFileName;
         private int _curBuild;
+
+        private string _stableBuildNumber;
+        private string _betaBuildNumber;
+        private string _stableLink;
+        private string _betaLink;
+        private string _stableNews;
+        private string _betaNews;
         #endregion
 
         #region Constructors
@@ -47,7 +54,14 @@ namespace elp87.SimpleUpdate
         private void ParseVersionTable(string _versionTableUri)
         {
             XElement versionX = XElement.Load(_versionTableFileName);
-        
+
+            this._stableBuildNumber = versionX.Element("build").Value;
+            this._stableLink = versionX.Element("link").Value;
+            this._stableNews = versionX.Element("news").Value;
+
+            this._betaBuildNumber = versionX.Element("betaBuild").Value;
+            this._betaLink = versionX.Element("betaLink").Value;
+            this._betaNews = versionX.Element("betaNews").Value;
         }        
         #endregion
         #endregion
@@ -57,6 +71,62 @@ namespace elp87.SimpleUpdate
         {
             get { return this._curBuild; }
             set { this._curBuild = value; }
+        }
+
+        public int StableBuildNumber
+        {
+            get
+            {
+                try
+                {
+                    return Convert.ToInt32(this._stableBuildNumber);
+                }
+                catch (FormatException)
+                {
+                    throw new InvalidBuildNumberException("StableBuildNumber: " + this._stableBuildNumber + " is not valid build number");
+                }
+            }
+
+            set { this._stableBuildNumber = value.ToString(); }
+        }
+
+        public string StableLink
+        {
+            get { return this._stableLink; }
+            set { this._stableLink = value; }
+        }
+
+        public string StableNews
+        {
+            get { return this._stableNews; }
+            set { this._stableNews = value; }
+        }
+
+        public int BetaBuildNumber
+        {
+            get
+            {
+                try
+                {
+                    return Convert.ToInt32(this._betaBuildNumber);
+                }
+                catch (FormatException)
+                {
+                    throw new InvalidBuildNumberException("BetaBuildNumber: " + this._betaBuildNumber + " is not valid build number");
+                }
+            }
+        }
+
+        public string BetaLink
+        {
+            get { return this._betaLink; }
+            set { this._betaLink = value; }
+        }
+
+        public string BetaNews
+        {
+            get { return this._betaNews; }
+            set { this._betaNews = value; }
         }
         #endregion
     }
