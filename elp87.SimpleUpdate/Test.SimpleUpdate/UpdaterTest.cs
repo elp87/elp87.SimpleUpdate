@@ -9,7 +9,8 @@ namespace Test.SimpleUpdate
         [TestMethod]
         public void TestMethod1()
         {
-            Updater upd = new Updater();
+            int curBuild = 10;
+            Updater upd = new Updater(curBuild);
             upd.CheckUpdate();
         }
     }
