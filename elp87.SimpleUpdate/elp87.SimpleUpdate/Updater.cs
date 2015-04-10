@@ -1,5 +1,8 @@
-﻿using System.Xml.Linq;
-using System;
+﻿using System;
+using System.Net;
+using System.Xml.Linq;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace elp87.SimpleUpdate
 {
@@ -17,6 +20,9 @@ namespace elp87.SimpleUpdate
         private string _betaLink;
         private string _stableNews;
         private string _betaNews;
+
+        private Window progressWindow;
+        private ProgressBar pBar;
         #endregion
 
         #region Constructors
@@ -42,7 +48,22 @@ namespace elp87.SimpleUpdate
             this.ParseConfigFile();
             this.ParseVersionTable(_versionTableFileName);
             this.CheckAvailability();
-        }        
+        }
+
+        public void GetUpdate(UpdateType updateType)
+        {
+            string updaterDir = System.Environment.GetEnvironmentVariable("appdata") + @"\elp87\Updater\";
+            string appUpdDir = updaterDir + this._appName;
+            string setupFileName = appUpdDir + @"\setup.exe";
+            WebClient client = new WebClient();
+
+            client.DownloadFileAsync(new Uri(this.StableLink), setupFileName);
+            progressWindow = GenerateProgressWindow();
+            progressWindow.Show();
+            client.DownloadFileCompleted += client_DownloadFileCompleted;
+            client.DownloadProgressChanged += client_DownloadProgressChanged;
+            
+        }
         #endregion
 
         #region Private
@@ -77,7 +98,36 @@ namespace elp87.SimpleUpdate
             else if (StableBuildNumber <= CurrentBuild && BetaBuildNumber > CurrentBuild) this.NewBuildAvailability = NewBuildAvailabilities.NewBetaOnlyAvailable;
             else this.NewBuildAvailability = NewBuildAvailabilities.NoNewBuilds;
 
-        }   
+        }
+
+        private Window GenerateProgressWindow()
+        {
+            Window window = new Window();
+            window.Height = 80;
+            window.Width = 300;
+            Grid grid = new Grid();
+            window.Content = grid;
+            pBar = new ProgressBar();
+            pBar.Minimum = 0;
+            pBar.Maximum = 100;
+            pBar.Width = 250;
+            pBar.Height = 20;
+            pBar.HorizontalAlignment = HorizontalAlignment.Center;
+            pBar.VerticalAlignment = VerticalAlignment.Center;
+            grid.Children.Add(pBar);
+            return window;
+        }
+        #endregion        
+        
+        #region Event Handlers
+        private void client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        {
+            pBar.Value = e.ProgressPercentage;
+        }
+
+        private void client_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
+        {            
+        }    
         #endregion
         #endregion
 
@@ -154,6 +204,12 @@ namespace elp87.SimpleUpdate
             NoNewBuilds,
             NewBetaOnlyAvailable,
             NewStableAvailable
+        }
+
+        public enum UpdateType
+        {
+            Beta,
+            Stable
         }
         #endregion
     }
