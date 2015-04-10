@@ -23,12 +23,14 @@ namespace elp87.SimpleUpdate
         {
             this._configFileName = configFileName;
             this._curBuild = curBuild;
+            this.NewBuildAvailability = NewBuildAvailabilities.NoInfo;
         }
 
         public Updater(int curBuild)
         {
             this._configFileName = System.AppDomain.CurrentDomain.BaseDirectory + @"\updconfig.xml";
             this._curBuild = curBuild;
+            this.NewBuildAvailability = NewBuildAvailabilities.NoInfo;
         }
         #endregion
 
@@ -38,6 +40,7 @@ namespace elp87.SimpleUpdate
         {
             this.ParseConfigFile();
             this.ParseVersionTable(_versionTableFileName);
+            this.CheckAvailability();
         }
         #endregion
 
@@ -62,7 +65,15 @@ namespace elp87.SimpleUpdate
             this._betaBuildNumber = versionX.Element("betaBuild").Value;
             this._betaLink = versionX.Element("betaLink").Value;
             this._betaNews = versionX.Element("betaNews").Value;
-        }        
+        }
+
+        private void CheckAvailability()
+        {
+            if (StableBuildNumber > CurrentBuild) this.NewBuildAvailability = NewBuildAvailabilities.NewStableAvailable;
+            else if (StableBuildNumber <= CurrentBuild && BetaBuildNumber > CurrentBuild) this.NewBuildAvailability = NewBuildAvailabilities.NewBetaOnlyAvailable;
+            else this.NewBuildAvailability = NewBuildAvailabilities.NoNewBuilds;
+
+        }   
         #endregion
         #endregion
 
@@ -127,6 +138,18 @@ namespace elp87.SimpleUpdate
         {
             get { return this._betaNews; }
             set { this._betaNews = value; }
+        }
+
+        public NewBuildAvailabilities NewBuildAvailability { get; set; }
+        #endregion
+
+        #region enum
+        public enum NewBuildAvailabilities
+        {
+            NoInfo,
+            NoNewBuilds,
+            NewBetaOnlyAvailable,
+            NewStableAvailable
         }
         #endregion
     }
