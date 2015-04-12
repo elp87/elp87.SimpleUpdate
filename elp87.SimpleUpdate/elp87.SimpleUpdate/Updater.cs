@@ -3,6 +3,7 @@ using System.Net;
 using System.Xml.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Diagnostics;
 
 namespace elp87.SimpleUpdate
 {
@@ -23,10 +24,14 @@ namespace elp87.SimpleUpdate
 
         private Window progressWindow;
         private ProgressBar pBar;
+
+        private string _updaterDir;
+        private string _appUpdDir;
+        private string _setupFileName;
         #endregion
 
         #region Constructors
-        public Updater(string configFileName, int curBuild) 
+        public Updater(string configFileName, int curBuild)
         {
             this._configFileName = configFileName;
             this._curBuild = curBuild;
@@ -52,17 +57,17 @@ namespace elp87.SimpleUpdate
 
         public void GetUpdate(UpdateType updateType)
         {
-            string updaterDir = System.Environment.GetEnvironmentVariable("appdata") + @"\elp87\Updater\";
-            string appUpdDir = updaterDir + this._appName;
-            string setupFileName = appUpdDir + @"\setup.exe";
+            this._updaterDir = System.Environment.GetEnvironmentVariable("appdata") + @"\elp87\Updater\";
+            this._appUpdDir = this._updaterDir + this._appName;
+            this._setupFileName = this._appUpdDir + @"\setup.zip";
             WebClient client = new WebClient();
 
-            client.DownloadFileAsync(new Uri(this.StableLink), setupFileName);
+            client.DownloadFileAsync(new Uri(this.StableLink), _setupFileName);
             progressWindow = GenerateProgressWindow();
             progressWindow.Show();
             client.DownloadFileCompleted += client_DownloadFileCompleted;
             client.DownloadProgressChanged += client_DownloadProgressChanged;
-            
+
         }
 
         public void GenerateUpdateConfigFile(string filename, UpdateConfig config)
@@ -127,8 +132,8 @@ namespace elp87.SimpleUpdate
             grid.Children.Add(pBar);
             return window;
         }
-        #endregion        
-        
+        #endregion
+
         #region Event Handlers
         private void client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
@@ -136,8 +141,15 @@ namespace elp87.SimpleUpdate
         }
 
         private void client_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
-        {            
-        }    
+        {
+            progressWindow.Close();
+            ZipFile zip = new ZipFile(this._setupFileName);
+            foreach (ZipEntry entry in zip.Entries)
+            {
+                entry.Extract(this._appUpdDir);
+            }
+            Process.Start(this._appUpdDir + @"Setup.exe");
+        }
         #endregion
         #endregion
 
