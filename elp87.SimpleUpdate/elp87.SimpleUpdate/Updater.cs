@@ -64,6 +64,16 @@ namespace elp87.SimpleUpdate
             client.DownloadProgressChanged += client_DownloadProgressChanged;
             
         }
+
+        public void GenerateUpdateConfigFile(string filename, UpdateConfig config)
+        {
+            XElement configX = new XElement("updconfig",
+                new XElement("appName", config.AppName),
+                new XElement("servername", config.ServerAddress)
+                );
+            configX.Save(filename);
+
+        }
         #endregion
 
         #region Private
