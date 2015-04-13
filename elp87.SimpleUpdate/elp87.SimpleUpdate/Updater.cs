@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
+using System.IO;
 using System.Net;
-using System.Xml.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Diagnostics;
+using System.Xml.Linq;
 
 namespace elp87.SimpleUpdate
 {
@@ -62,6 +63,7 @@ namespace elp87.SimpleUpdate
             this._setupFileName = this._appUpdDir + @"\setup.zip";
             WebClient client = new WebClient();
 
+            if (!Directory.Exists(this._appUpdDir)) Directory.CreateDirectory(this._appUpdDir);
             client.DownloadFileAsync(new Uri(this.StableLink), _setupFileName);
             progressWindow = GenerateProgressWindow();
             progressWindow.Show();
@@ -148,7 +150,7 @@ namespace elp87.SimpleUpdate
             {
                 entry.Extract(this._appUpdDir);
             }
-            Process.Start(this._appUpdDir + @"Setup.exe");
+            Process.Start(this._appUpdDir + @"\Setup.exe");
         }
         #endregion
         #endregion
