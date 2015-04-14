@@ -56,15 +56,36 @@ namespace elp87.SimpleUpdate
             this.CheckAvailability();
         }
 
-        public void GetUpdate(UpdateType updateType)
+        public void GetUpdate(UpdateTypes updateType)
         {
+            string link;
+
             this._updaterDir = System.Environment.GetEnvironmentVariable("appdata") + @"\elp87\Updater\";
             this._appUpdDir = this._updaterDir + this._appName;
+
+            switch (updateType)
+            {
+                case UpdateTypes.Stable:
+                    {
+                        link = this.StableLink;
+                        break;
+                    }
+                case UpdateTypes.Beta:
+                    {
+                        link = this.BetaLink;
+                        break;
+                    }
+                default:
+                    {
+                        link = null;
+                        break;
+                    }
+            }
             this._setupFileName = this._appUpdDir + @"\setup.zip";
             WebClient client = new WebClient();
 
             if (!Directory.Exists(this._appUpdDir)) Directory.CreateDirectory(this._appUpdDir);
-            client.DownloadFileAsync(new Uri(this.StableLink), _setupFileName);
+            client.DownloadFileAsync(new Uri(link), _setupFileName);
             progressWindow = GenerateProgressWindow();
             progressWindow.Show();
             client.DownloadFileCompleted += client_DownloadFileCompleted;
@@ -230,7 +251,7 @@ namespace elp87.SimpleUpdate
             NewStableAvailable
         }
 
-        public enum UpdateType
+        public enum UpdateTypes
         {
             Beta,
             Stable
