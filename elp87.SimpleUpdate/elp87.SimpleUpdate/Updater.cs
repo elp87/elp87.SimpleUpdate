@@ -85,6 +85,7 @@ namespace elp87.SimpleUpdate
             WebClient client = new WebClient();
 
             if (!Directory.Exists(this._appUpdDir)) Directory.CreateDirectory(this._appUpdDir);
+            if (File.Exists(this._setupFileName)) File.Delete(this._setupFileName);
             client.DownloadFileAsync(new Uri(link), _setupFileName);
             progressWindow = GenerateProgressWindow();
             progressWindow.Show();
@@ -169,7 +170,7 @@ namespace elp87.SimpleUpdate
             ZipFile zip = new ZipFile(this._setupFileName);
             foreach (ZipEntry entry in zip.Entries)
             {
-                entry.Extract(this._appUpdDir);
+                entry.Extract(this._appUpdDir, ExtractExistingFileAction.OverwriteSilently);
             }
             Process.Start(this._appUpdDir + @"\Setup.exe");
         }
