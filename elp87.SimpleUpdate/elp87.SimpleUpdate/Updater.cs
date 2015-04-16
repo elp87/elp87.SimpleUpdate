@@ -172,7 +172,11 @@ namespace elp87.SimpleUpdate
             {
                 entry.Extract(this._appUpdDir, ExtractExistingFileAction.OverwriteSilently);
             }
-            Process.Start(this._appUpdDir + @"\Setup.exe");
+            try
+            {
+                Process.Start(this._appUpdDir + @"\Setup.exe");
+            }
+            catch (System.ComponentModel.Win32Exception) { }
         }
         #endregion
         #endregion
