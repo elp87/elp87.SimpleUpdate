@@ -52,9 +52,9 @@ namespace elp87.SimpleUpdate
         #region Public
         public void CheckUpdate()
         {
-            this.ParseConfigFile();
-            this.ParseVersionTable(_versionTableFileName);
-            this.CheckAvailability();
+            ParseConfigFile();
+            ParseVersionTable();
+            CheckAvailability();
         }
 
         public void GetUpdate(UpdateTypes updateType)
@@ -128,7 +128,7 @@ namespace elp87.SimpleUpdate
             if (this._appName == "") throw new EmptyAppNameException();
         }
 
-        private void ParseVersionTable(string versionTableUri)
+        private void ParseVersionTable()
         {
             XElement versionX = XElement.Load(_versionTableFileName);
 
