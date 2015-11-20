@@ -108,7 +108,16 @@ namespace elp87.SimpleUpdate
         #region Private
         private void ParseConfigFile()
         {
-            XElement updX = XElement.Load(_configFileName);
+            XElement updX = null;
+            try
+            {
+                updX = XElement.Load(_configFileName);
+            }
+            catch (FileNotFoundException ex)
+            {
+                throw new NoUpdConfigFileException("no updConfig file in " + _configFileName, ex);
+            }
+
             string versionTableName = updX.Element("servername").Value;
             if (versionTableName == null) throw new NullVersionTableUriException();
             if (versionTableName.StartsWith(@"/")) versionTableName = System.AppDomain.CurrentDomain.BaseDirectory + versionTableName;

@@ -37,4 +37,16 @@ namespace elp87.SimpleUpdate
           System.Runtime.Serialization.StreamingContext context)
             : base(info, context) { }
     }
+
+    [Serializable]
+    public class NoUpdConfigFileException : Exception
+    {
+        public NoUpdConfigFileException() { }
+        public NoUpdConfigFileException(string message) : base(message) { }
+        public NoUpdConfigFileException(string message, Exception inner) : base(message, inner) { }
+        protected NoUpdConfigFileException(
+          System.Runtime.Serialization.SerializationInfo info,
+          System.Runtime.Serialization.StreamingContext context)
+            : base(info, context) { }
+    }
 }
