@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Windows;
 using System.Windows.Controls;
@@ -127,17 +128,18 @@ namespace elp87.SimpleUpdate
             if (this._appName == "") throw new EmptyAppNameException();
         }
 
-        private void ParseVersionTable(string _versionTableUri)
+        private void ParseVersionTable(string versionTableUri)
         {
             XElement versionX = XElement.Load(_versionTableFileName);
 
-            this._stableBuildNumber = versionX.Element("build").Value;
-            this._stableLink = versionX.Element("link").Value;
-            this._stableNews = versionX.Element("news").Value;
+            // Замена Descendants(name).First вместо Element(name) по причине возможных отличий таблицы обновлений
+            this._stableBuildNumber = versionX.Descendants("build").First().Value;
+            this._stableLink = versionX.Descendants("link").First().Value;
+            this._stableNews = versionX.Descendants("news").First().Value;
 
-            this._betaBuildNumber = versionX.Element("betaBuild").Value;
-            this._betaLink = versionX.Element("betaLink").Value;
-            this._betaNews = versionX.Element("betaNews").Value;
+            this._betaBuildNumber = versionX.Descendants("betaBuild").First().Value;
+            this._betaLink = versionX.Descendants("betaLink").First().Value;
+            this._betaNews = versionX.Descendants("betaNews").First().Value;
         }
 
         private void CheckAvailability()
